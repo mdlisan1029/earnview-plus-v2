@@ -238,3 +238,30 @@ width:90%;
 }
 
   }
+
+
+textarea{
+
+width:90%;
+
+padding:12px;
+
+margin:10px 0;
+
+border:none;
+
+border-radius:8px;
+
+height:80px;
+
+}
+
+
+
+img{
+
+margin-top:10px;
+
+border-radius:10px;
+
+  }
