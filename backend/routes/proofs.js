@@ -34,4 +34,24 @@ proofController.getProofs
 
 
 
+router.post(
+
+'/approve/:id',
+
+proofController.approveProof
+
+);
+
+
+
+router.post(
+
+'/reject/:id',
+
+proofController.rejectProof
+
+);
+
+
+
 module.exports = router;
