@@ -1,5 +1,7 @@
 const fs = require('fs');
+
 const path = require('path');
+
 
 const dbPath = path.join(
 
@@ -8,6 +10,7 @@ __dirname,
 '../database.json'
 
 );
+
 
 
 function readDB(){
@@ -23,6 +26,7 @@ dbPath
 );
 
 }
+
 
 
 function writeDB(data){
@@ -48,6 +52,7 @@ null,
 
 
 
+
 exports.addOffer=(req,res)=>{
 
 
@@ -65,13 +70,23 @@ reward,
 
 link,
 
-category,
-
-image
+category
 
 }
 
 =req.body;
+
+
+
+let image='';
+
+
+
+if(req.file){
+
+image=req.file.filename;
+
+}
 
 
 
@@ -99,8 +114,7 @@ category,
 image,
 
 
-status:"active"
-
+status:'active'
 
 
 };
@@ -129,11 +143,10 @@ res.json({
 success:true,
 
 
-message:"Offer Added",
+message:'Offer Added',
 
 
 offer
-
 
 
 });
@@ -141,6 +154,7 @@ offer
 
 
 };
+
 
 
 
@@ -155,15 +169,14 @@ const db=readDB();
 
 res.json(
 
-
 db.offers
-
 
 );
 
 
 
 };
+
 
 
 
@@ -185,14 +198,73 @@ req.params.id
 
 
 
+const offer=db.offers.find(
+
+o=>o.id===id
+
+);
+
+
+
+if(
+
+offer
+
+&&
+
+offer.image
+
+)
+
+{
+
+
+const filePath=path.join(
+
+__dirname,
+
+'../uploads',
+
+offer.image
+
+);
+
+
+
+if(
+
+fs.existsSync(
+
+filePath
+
+)
+
+)
+
+{
+
+
+fs.unlinkSync(
+
+filePath
+
+);
+
+
+}
+
+
+}
+
+
+
+
 db.offers=
 
 
 db.offers.filter(
 
-
 o=>o.id!==id
-
 
 );
 
@@ -214,7 +286,7 @@ res.json({
 success:true,
 
 
-message:"Offer Deleted"
+message:'Offer Deleted'
 
 
 });
