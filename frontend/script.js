@@ -12,14 +12,17 @@ async function telegramLogin(){
 
 try{
 
-const telegram_id=tg.initDataUnsafe?.user?.id;
+const telegram_id = tg.initDataUnsafe?.user?.id;
 
-const username=tg.initDataUnsafe?.user?.username||"user";
+const username = tg.initDataUnsafe?.user?.username || "user";
 
 const start_param = tg.initDataUnsafe?.start_param || null;
+
+
+
 if(!telegram_id){
 
-userId=localStorage.getItem("userId");
+userId = localStorage.getItem('userId');
 
 return;
 
@@ -27,7 +30,7 @@ return;
 
 
 
-const res=await fetch(
+const res = await fetch(
 
 API+'/api/auth/telegram',
 
@@ -51,13 +54,17 @@ start_param
 
 })
 
+}
+
+);
 
 
-const data=await res.json();
+
+const data = await res.json();
 
 
 
-userId=data.user.id;
+userId = data.user.id;
 
 
 
@@ -68,6 +75,7 @@ localStorage.setItem(
 userId
 
 );
+
 
 
 }
@@ -89,7 +97,7 @@ async function loadOffers(){
 try{
 
 
-const res=await fetch(
+const res = await fetch(
 
 API+'/api/offers'
 
@@ -97,7 +105,7 @@ API+'/api/offers'
 
 
 
-const offers=await res.json();
+const offers = await res.json();
 
 
 
@@ -122,18 +130,12 @@ width="100"
 >
 
 
-<h3>
-
-${o.title}
-
-</h3>
+<h3>${o.title}</h3>
 
 
 <p>
 
-${o.reward}
-
-BDT
+${o.reward} BDT
 
 </p>
 
@@ -190,6 +192,7 @@ console.log(e);
 
 
 
+
 function submitProofPage(id){
 
 window.location.href=
@@ -205,13 +208,13 @@ id;
 
 
 
-async function loadProfile(){
 
+async function loadProfile(){
 
 try{
 
 
-const res=await fetch(
+const res = await fetch(
 
 API+
 
@@ -225,7 +228,7 @@ userId
 
 
 
-const data=await res.json();
+const data = await res.json();
 
 
 
@@ -309,7 +312,7 @@ console.log(e);
 async function submitProof(){
 
 
-const params=new URLSearchParams(
+const params = new URLSearchParams(
 
 window.location.search
 
@@ -317,7 +320,7 @@ window.location.search
 
 
 
-const offerId=params.get(
+const offerId = params.get(
 
 'offer'
 
@@ -325,7 +328,7 @@ const offerId=params.get(
 
 
 
-const file=document.getElementById(
+const file = document.getElementById(
 
 'proof'
 
@@ -347,7 +350,7 @@ return;
 
 
 
-const formData=new FormData();
+const formData = new FormData();
 
 
 
@@ -418,10 +421,11 @@ window.location.href='index.html';
 
 
 
+
 async function createWithdraw(){
 
 
-const amount=document.getElementById(
+const amount = document.getElementById(
 
 'amount'
 
@@ -429,7 +433,7 @@ const amount=document.getElementById(
 
 
 
-const method=document.getElementById(
+const method = document.getElementById(
 
 'method'
 
@@ -437,7 +441,7 @@ const method=document.getElementById(
 
 
 
-const number=document.getElementById(
+const number = document.getElementById(
 
 'number'
 
@@ -515,7 +519,7 @@ await telegramLogin();
 
 if(document.getElementById('offers')){
 
-loadOffers();
+await loadOffers();
 
 }
 
@@ -523,7 +527,7 @@ loadOffers();
 
 if(document.getElementById('uid')){
 
-loadProfile();
+await loadProfile();
 
 }
 
