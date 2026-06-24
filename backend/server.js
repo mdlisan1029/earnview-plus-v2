@@ -12,6 +12,7 @@ const withdrawRoutes = require('./routes/withdraw');
 const authRoutes=require('./routes/auth');
 const referralRoutes=require('./routes/referral');
 const userRoutes=require('./routes/user');
+const analyticsRoutes=require('./routes/analytics');
 
 app.use(express.json());
 
@@ -25,8 +26,12 @@ app.use('/api/proofs', proofRoutes);
 app.use('/api/withdraw', withdrawRoutes);
 
 app.use('/api/auth', authRoutes);
+
 app.use('/api/referral', referralRoutes);
+
 app.use('/api/user', userRoutes);
+
+app.use('/api/analytics', analyticsRoutes);
 
 
 app.use(
