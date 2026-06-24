@@ -177,3 +177,49 @@ loadProfile();
 
 
 });
+
+
+async function loadReferral(){
+
+
+const res=await fetch(
+
+API+
+
+'/api/referral/'+userId
+
+);
+
+
+const data=await res.json();
+
+
+
+if(
+
+document.getElementById(
+
+'refCode'
+
+)
+
+){
+
+document.getElementById(
+
+'refCode'
+
+).innerText=
+
+
+'https://t.me/YOUR_BOT?start='
+
++
+
+data.code;
+
+
+}
+
+
+  }
