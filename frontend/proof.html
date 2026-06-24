@@ -10,9 +10,9 @@ Submit Proof
 
 </title>
 
-<link rel="stylesheet"
+<link rel="stylesheet" href="style.css">
 
-href="style.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 </head>
 
@@ -36,11 +36,16 @@ type="file"
 
 id="proof"
 
+accept="image/*"
+
 >
 
 
 
-<button>
+<br>
+
+
+<button onclick="submitProof()">
 
 Submit Proof
 
@@ -49,6 +54,7 @@ Submit Proof
 
 
 </div>
+
 
 
 <script src="script.js"></script>
