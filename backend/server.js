@@ -10,6 +10,7 @@ const offerRoutes = require('./routes/offers');
 const proofRoutes = require('./routes/proofs');
 const withdrawRoutes = require('./routes/withdraw');
 const authRoutes=require('./routes/auth');
+const userRoutes=require('./routes/user');
 const referralRoutes=require('./routes/referral');
 
 app.use(express.json());
