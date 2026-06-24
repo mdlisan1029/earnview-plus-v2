@@ -427,3 +427,190 @@ loadProofs();
 
 
 loadProofs();
+
+
+async function loadWithdraws(){
+
+const res = await fetch(
+
+API+
+
+'/api/withdraw'
+
+);
+
+
+const data = await res.json();
+
+
+
+let html='';
+
+
+
+data.forEach(w=>{
+
+
+html+=`
+
+
+<div class="card">
+
+
+<p>
+
+User ID : ${w.userId}
+
+</p>
+
+
+<p>
+
+Amount : ${w.amount} BDT
+
+</p>
+
+
+<p>
+
+Fee : ${w.fee} BDT
+
+</p>
+
+
+<p>
+
+Receive : ${w.finalAmount} BDT
+
+</p>
+
+
+<p>
+
+Method : ${w.method}
+
+</p>
+
+
+<p>
+
+Number : ${w.number}
+
+</p>
+
+
+<p>
+
+Status : ${w.status}
+
+</p>
+
+
+
+<button
+
+onclick="approveWithdraw(
+
+${w.id}
+
+)"
+
+>
+
+Approve
+
+</button>
+
+
+
+<button
+
+onclick="rejectWithdraw(
+
+${w.id}
+
+)"
+
+>
+
+Reject
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+
+document.getElementById(
+
+'withdraws'
+
+).innerHTML=html;
+
+
+
+}
+
+
+
+
+async function approveWithdraw(id){
+
+
+await fetch(
+
+API+
+
+'/api/withdraw/approve/'+id,
+
+{
+
+method:'POST'
+
+}
+
+);
+
+
+loadWithdraws();
+
+
+}
+
+
+
+
+async function rejectWithdraw(id){
+
+
+await fetch(
+
+API+
+
+'/api/withdraw/reject/'+id,
+
+{
+
+method:'POST'
+
+}
+
+);
+
+
+loadWithdraws();
+
+
+}
+
+
+
+loadWithdraws();
