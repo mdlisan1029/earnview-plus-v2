@@ -175,6 +175,8 @@ loadOffers();
 
 loadProfile();
 
+loadReferral();
+
 
 });
 
