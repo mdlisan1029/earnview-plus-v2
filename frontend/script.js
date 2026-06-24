@@ -45,13 +45,11 @@ body:JSON.stringify({
 
 telegram_id,
 
-username
+username,
+
+start_param
 
 })
-
-}
-
-);
 
 
 
