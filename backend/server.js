@@ -1,12 +1,11 @@
-const offerRoutes = require('./routes/offers');
-const proofRoutes = require('./routes/proofs');
 const express = require('express');
 
 const path = require('path');
 
 const app = express();
 
-
+const proofRoutes = require('./routes/proof')
+  
 const adminRoutes = require('./routes/admin');
 
 const offerRoutes = require('./routes/offers');
