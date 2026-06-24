@@ -1,3 +1,5 @@
+const offerRoutes = require('./routes/offers');
+const proofRoutes = require('./routes/proofs');
 const express = require('express');
 
 const path = require('path');
