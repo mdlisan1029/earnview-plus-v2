@@ -3,14 +3,15 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-  
+
+
 const adminRoutes = require('./routes/admin');
-
 const offerRoutes = require('./routes/offers');
+const proofRoutes = require('./routes/proofs');
 
-const proofRoutes = require('./routes/proof')
 
 app.use(express.json());
+
 
 app.use('/api/admin', adminRoutes);
 
@@ -18,75 +19,27 @@ app.use('/api/offers', offerRoutes);
 
 app.use('/api/proofs', proofRoutes);
 
-app.use(
-
-'/api/admin',
-
-adminRoutes
-
-);
-
 
 app.use(
-
-'/api/offers',
-
-offerRoutes
-
-);
-
-
-
-
-app.use(
-
 '/uploads',
-
 express.static(
-
-path.join(
-
-__dirname,
-
-'uploads'
-
+path.join(__dirname, 'uploads')
 )
-
-)
-
 );
 
 
+app.get('/', (req, res) => {
 
-
-app.get('/',(req,res)=>{
-
-
-res.send(
-
-'EarnView Plus Backend Running'
-
-);
-
+res.send('EarnView Plus Backend Running');
 
 });
-
-
 
 
 const PORT = process.env.PORT || 5000;
 
 
+app.listen(PORT, () => {
 
-
-app.listen(PORT,()=>{
-
-
-console.log(
-
-`Server running on ${PORT}`
-
-);
-
+console.log(`Server running on ${PORT}`);
 
 });
