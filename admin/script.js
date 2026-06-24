@@ -1,104 +1,72 @@
-const API = 'https://YOUR_RENDER_URL.onrender.com';
+const API='https://YOUR_RENDER_URL.onrender.com';
 
 
+
+/* ================= OFFERS ================= */
 
 async function addOffer(){
 
-
-const formData = new FormData();
-
+const formData=new FormData();
 
 
 formData.append(
 
 'title',
 
-document.getElementById(
-
-'title'
-
-).value
+document.getElementById('title').value
 
 );
-
 
 
 formData.append(
 
 'description',
 
-document.getElementById(
-
-'description'
-
-).value
+document.getElementById('description').value
 
 );
-
 
 
 formData.append(
 
 'reward',
 
-document.getElementById(
-
-'reward'
-
-).value
+document.getElementById('reward').value
 
 );
-
 
 
 formData.append(
 
 'link',
 
-document.getElementById(
-
-'link'
-
-).value
+document.getElementById('link').value
 
 );
-
 
 
 formData.append(
 
 'category',
 
-document.getElementById(
-
-'category'
-
-).value
+document.getElementById('category').value
 
 );
-
 
 
 formData.append(
 
 'image',
 
-document.getElementById(
-
-'image'
-
-).files[0]
+document.getElementById('image').files[0]
 
 );
 
 
 
-
 await fetch(
 
-API+
-
-'/api/offers/add',
+API+'/api/offers/add',
 
 {
 
@@ -111,13 +79,9 @@ body:formData
 );
 
 
-
 loadOffers();
 
-
-
 }
-
 
 
 
@@ -125,17 +89,20 @@ loadOffers();
 async function loadOffers(){
 
 
-const res = await fetch(
+if(!document.getElementById('offers'))
 
-API+
+return;
 
-'/api/offers'
+
+
+const res=await fetch(
+
+API+'/api/offers'
 
 );
 
 
-
-const offers = await res.json();
+const offers=await res.json();
 
 
 
@@ -148,15 +115,10 @@ offers.forEach(o=>{
 
 html+=`
 
-
 <div class="card">
 
 
-<h3>
-
-${o.title}
-
-</h3>
+<h3>${o.title}</h3>
 
 
 <p>
@@ -166,38 +128,29 @@ ${o.reward} BDT
 </p>
 
 
-
 <img
-
 
 src="${API}/uploads/${o.image}"
 
-
 width="100"
 
-
 >
-
 
 
 <br>
 
 
-<button
+<button onclick="editOffer(${o.id})">
+
+Edit
+
+</button>
 
 
-onclick="deleteOffer(
 
-${o.id}
-
-)"
-
-
->
-
+<button onclick="deleteOffer(${o.id})">
 
 Delete
-
 
 </button>
 
@@ -205,8 +158,8 @@ Delete
 
 </div>
 
-
 `;
+
 
 
 });
@@ -226,25 +179,77 @@ document.getElementById(
 
 
 
-async function deleteOffer(id){
+
+async function editOffer(id){
+
+
+const title=prompt(
+
+'Title'
+
+);
+
+
+if(!title)return;
+
+
+
+const description=prompt(
+
+'Description'
+
+);
+
+
+const reward=prompt(
+
+'Reward'
+
+);
+
+
+const link=prompt(
+
+'CPA Link'
+
+);
+
+
+const category=prompt(
+
+'Category'
+
+);
+
 
 
 await fetch(
 
-
 API+
 
-'/api/offers/'+id,
-
+'/api/offers/edit/'+id,
 
 {
 
+method:'PUT',
 
-method:'DELETE'
+headers:{
 
+'Content-Type':'application/json'
+
+},
+
+body:JSON.stringify({
+
+title,
+description,
+reward,
+link,
+category
+
+})
 
 }
-
 
 );
 
@@ -253,25 +258,63 @@ method:'DELETE'
 loadOffers();
 
 
+}
+
+
+
+
+async function deleteOffer(id){
+
+
+await fetch(
+
+API+
+
+'/api/offers/'+id,
+
+{
+
+method:'DELETE'
 
 }
+
+);
 
 
 
 loadOffers();
 
+
+}
+
+
+
+
+
+/* ================= PROOFS ================= */
+
+
 async function loadProofs(){
 
-const res = await fetch(
 
-API +
+if(!document.getElementById('proofs'))
+
+return;
+
+
+
+const res=await fetch(
+
+API+
 
 '/api/proofs'
 
 );
 
 
-const proofs = await res.json();
+
+const proofs=await res.json();
+
 
 
 let html='';
@@ -281,24 +324,29 @@ let html='';
 proofs.forEach(p=>{
 
 
-html += `
-
+html+=`
 
 <div class="card">
 
 
 <p>
 
-User ID : ${p.userId}
+User :
+
+${p.userId}
 
 </p>
+
 
 
 <p>
 
-Offer ID : ${p.offerId}
+Offer :
+
+${p.offerId}
 
 </p>
+
 
 
 <img
@@ -310,9 +358,8 @@ width="120"
 >
 
 
-<p>
 
-Status :
+<p>
 
 ${p.status}
 
@@ -320,15 +367,7 @@ ${p.status}
 
 
 
-<button
-
-onclick="approveProof(
-
-${p.id}
-
-)"
-
->
+<button onclick="approveProof(${p.id})">
 
 Approve
 
@@ -336,26 +375,18 @@ Approve
 
 
 
-<button
-
-onclick="rejectProof(
-
-${p.id}
-
-)"
-
->
+<button onclick="rejectProof(${p.id})">
 
 Reject
 
 </button>
 
 
+
 </div>
 
-
-
 `;
+
 
 
 });
@@ -369,8 +400,8 @@ document.getElementById(
 ).innerHTML=html;
 
 
-
 }
+
 
 
 
@@ -391,6 +422,7 @@ method:'POST'
 }
 
 );
+
 
 
 loadProofs();
@@ -419,6 +451,7 @@ method:'POST'
 );
 
 
+
 loadProofs();
 
 
@@ -426,12 +459,21 @@ loadProofs();
 
 
 
-loadProofs();
+
+
+/* ================= WITHDRAW ================= */
 
 
 async function loadWithdraws(){
 
-const res = await fetch(
+
+if(!document.getElementById('withdraws'))
+
+return;
+
+
+
+const res=await fetch(
 
 API+
 
@@ -440,7 +482,7 @@ API+
 );
 
 
-const data = await res.json();
+const data=await res.json();
 
 
 
@@ -453,69 +495,60 @@ data.forEach(w=>{
 
 html+=`
 
-
 <div class="card">
 
 
 <p>
 
-User ID : ${w.userId}
+User :
+
+${w.userId}
 
 </p>
+
 
 
 <p>
 
-Amount : ${w.amount} BDT
+Amount :
+
+${w.amount}
+
+BDT
 
 </p>
+
 
 
 <p>
 
-Fee : ${w.fee} BDT
+Method :
+
+${w.method}
 
 </p>
+
 
 
 <p>
 
-Receive : ${w.finalAmount} BDT
+Number :
+
+${w.number}
 
 </p>
+
 
 
 <p>
 
-Method : ${w.method}
-
-</p>
-
-
-<p>
-
-Number : ${w.number}
-
-</p>
-
-
-<p>
-
-Status : ${w.status}
+${w.status}
 
 </p>
 
 
 
-<button
-
-onclick="approveWithdraw(
-
-${w.id}
-
-)"
-
->
+<button onclick="approveWithdraw(${w.id})">
 
 Approve
 
@@ -523,15 +556,7 @@ Approve
 
 
 
-<button
-
-onclick="rejectWithdraw(
-
-${w.id}
-
-)"
-
->
+<button onclick="rejectWithdraw(${w.id})">
 
 Reject
 
@@ -541,8 +566,8 @@ Reject
 
 </div>
 
-
 `;
+
 
 
 });
@@ -558,6 +583,7 @@ document.getElementById(
 
 
 }
+
 
 
 
@@ -578,6 +604,7 @@ method:'POST'
 }
 
 );
+
 
 
 loadWithdraws();
@@ -606,6 +633,7 @@ method:'POST'
 );
 
 
+
 loadWithdraws();
 
 
@@ -613,10 +641,18 @@ loadWithdraws();
 
 
 
-loadWithdraws();
+
+
+/* ================= DASHBOARD ================= */
 
 
 async function loadStats(){
+
+
+if(!document.getElementById('users'))
+
+return;
+
 
 
 const res=await fetch(
@@ -632,8 +668,6 @@ const data=await res.json();
 
 
 
-if(document.getElementById('users')){
-
 document.getElementById(
 
 'users'
@@ -642,11 +676,7 @@ document.getElementById(
 
 data.totalUsers;
 
-}
 
-
-
-if(document.getElementById('offers')){
 
 document.getElementById(
 
@@ -656,11 +686,7 @@ document.getElementById(
 
 data.totalOffers;
 
-}
 
-
-
-if(document.getElementById('proofs')){
 
 document.getElementById(
 
@@ -670,11 +696,7 @@ document.getElementById(
 
 data.pendingProofs;
 
-}
 
-
-
-if(document.getElementById('withdraws')){
 
 document.getElementById(
 
@@ -684,11 +706,7 @@ document.getElementById(
 
 data.pendingWithdraws;
 
-}
 
-
-
-if(document.getElementById('paid')){
 
 document.getElementById(
 
@@ -700,11 +718,19 @@ data.totalPaid+
 
 ' BDT';
 
-}
-
 
 }
 
 
+
+
+/* ================= INIT ================= */
+
+
+loadOffers();
+
+loadProofs();
+
+loadWithdraws();
 
 loadStats();
