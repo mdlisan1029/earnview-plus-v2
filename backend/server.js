@@ -22,6 +22,7 @@ app.use('/api/proofs', proofRoutes);
 
 app.use('/api/withdraw', withdrawRoutes);
 
+app.use('/api/auth', authRoutes);
 
 app.use(
 '/uploads',
