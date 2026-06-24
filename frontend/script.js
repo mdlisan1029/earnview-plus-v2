@@ -12,21 +12,22 @@ async function telegramLogin(){
 
 try{
 
-const telegram_id = tg.initDataUnsafe?.user?.id;
+const telegram_id=tg.initDataUnsafe?.user?.id;
 
-const username = tg.initDataUnsafe?.user?.username || "user";
+const username=tg.initDataUnsafe?.user?.username||"user";
 
 
 if(!telegram_id){
 
-console.log("Telegram user not found");
+userId=localStorage.getItem("userId");
 
 return;
 
 }
 
 
-const res = await fetch(
+
+const res=await fetch(
 
 API+'/api/auth/telegram',
 
@@ -53,10 +54,13 @@ username
 );
 
 
-const data = await res.json();
+
+const data=await res.json();
 
 
-userId = data.user.id;
+
+userId=data.user.id;
+
 
 
 localStorage.setItem(
@@ -68,7 +72,9 @@ userId
 );
 
 
-}catch(e){
+}
+
+catch(e){
 
 console.log(e);
 
@@ -79,17 +85,22 @@ console.log(e);
 
 
 
+
 async function loadOffers(){
 
+try{
 
-const res = await fetch(
+
+const res=await fetch(
 
 API+'/api/offers'
 
 );
 
 
-const offers = await res.json();
+
+const offers=await res.json();
+
 
 
 let html='';
@@ -122,7 +133,9 @@ ${o.title}
 
 <p>
 
-${o.reward} BDT
+${o.reward}
+
+BDT
 
 </p>
 
@@ -168,6 +181,15 @@ document.getElementById(
 
 }
 
+catch(e){
+
+console.log(e);
+
+}
+
+}
+
+
 
 
 function submitProofPage(id){
@@ -188,43 +210,14 @@ id;
 async function loadProfile(){
 
 
-if(
-
-document.getElementById(
-
-'uid'
-
-)
-
-){
-
-document.getElementById(
-
-'uid'
-
-).innerText=userId;
-
-
-}
-
-
-}
-
-
-
-
-
-async function loadReferral(){
-
-
 try{
 
 
-const res = await fetch(
+const res=await fetch(
 
 API+
 
-'/api/referral/'
+'/api/user/'
 
 +
 
@@ -234,19 +227,54 @@ userId
 
 
 
-const data = await res.json();
+const data=await res.json();
 
 
 
-if(
+if(document.getElementById('uid')){
+
 
 document.getElementById(
 
-'refCode'
+'uid'
 
-)
+).innerText=data.id;
 
-){
+
+}
+
+
+
+if(document.getElementById('bal')){
+
+
+document.getElementById(
+
+'bal'
+
+).innerText=data.balance;
+
+
+}
+
+
+
+if(document.getElementById('refs')){
+
+
+document.getElementById(
+
+'refs'
+
+).innerText=data.referrals;
+
+
+}
+
+
+
+if(document.getElementById('refCode')){
+
 
 document.getElementById(
 
@@ -259,19 +287,20 @@ document.getElementById(
 
 +
 
-data.code;
+data.referralCode;
 
 
 }
 
 
 
-}catch(e){
+}
+
+catch(e){
 
 console.log(e);
 
 }
-
 
 }
 
@@ -282,14 +311,15 @@ console.log(e);
 async function submitProof(){
 
 
-const params = new URLSearchParams(
+const params=new URLSearchParams(
 
 window.location.search
 
 );
 
 
-const offerId = params.get(
+
+const offerId=params.get(
 
 'offer'
 
@@ -297,7 +327,7 @@ const offerId = params.get(
 
 
 
-const file = document.getElementById(
+const file=document.getElementById(
 
 'proof'
 
@@ -319,7 +349,7 @@ return;
 
 
 
-const formData = new FormData();
+const formData=new FormData();
 
 
 
@@ -390,6 +420,93 @@ window.location.href='index.html';
 
 
 
+async function createWithdraw(){
+
+
+const amount=document.getElementById(
+
+'amount'
+
+).value;
+
+
+
+const method=document.getElementById(
+
+'method'
+
+).value;
+
+
+
+const number=document.getElementById(
+
+'number'
+
+).value;
+
+
+
+if(amount<100){
+
+alert(
+
+'Minimum withdraw 100 BDT'
+
+);
+
+return;
+
+}
+
+
+
+await fetch(
+
+API+
+
+'/api/withdraw/create',
+
+{
+
+method:'POST',
+
+headers:{
+
+'Content-Type':'application/json'
+
+},
+
+body:JSON.stringify({
+
+userId,
+
+amount,
+
+method,
+
+number
+
+})
+
+}
+
+);
+
+
+
+alert(
+
+'Withdraw Submitted'
+
+);
+
+
+}
+
+
+
+
 
 async function init(){
 
@@ -397,16 +514,25 @@ async function init(){
 await telegramLogin();
 
 
+
+if(document.getElementById('offers')){
+
 loadOffers();
 
+}
+
+
+
+if(document.getElementById('uid')){
 
 loadProfile();
 
+}
 
-loadReferral();
 
 
 }
+
 
 
 init();
