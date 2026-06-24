@@ -89,7 +89,7 @@ loadOffers();
 async function loadOffers(){
 
 
-if(!document.getElementById('offers'))
+if(!document.getElementById('offersList'))
 
 return;
 
