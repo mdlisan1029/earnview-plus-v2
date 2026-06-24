@@ -24,6 +24,7 @@ offerController.addOffer
 
 
 
+
 router.get(
 
 '/',
@@ -34,6 +35,18 @@ offerController.getOffers
 
 
 
+
+router.put(
+
+'/edit/:id',
+
+offerController.updateOffer
+
+);
+
+
+
+
 router.delete(
 
 '/:id',
@@ -41,6 +54,7 @@ router.delete(
 offerController.deleteOffer
 
 );
+
 
 
 
