@@ -225,3 +225,110 @@ data.code;
 
 
   }
+
+
+async function submitProof(){
+
+
+const params = new URLSearchParams(
+
+window.location.search
+
+);
+
+
+const offerId = params.get(
+
+'offer'
+
+);
+
+
+
+const file = document.getElementById(
+
+'proof'
+
+).files[0];
+
+
+
+if(!file){
+
+alert(
+
+'Select screenshot'
+
+);
+
+return;
+
+}
+
+
+
+const formData = new FormData();
+
+
+
+formData.append(
+
+'userId',
+
+userId
+
+);
+
+
+formData.append(
+
+'offerId',
+
+offerId
+
+);
+
+
+formData.append(
+
+'image',
+
+file
+
+);
+
+
+
+
+await fetch(
+
+API+
+
+'/api/proofs/submit',
+
+{
+
+method:'POST',
+
+body:formData
+
+}
+
+);
+
+
+
+
+alert(
+
+'Proof Submitted'
+
+);
+
+
+
+window.location.href='index.html';
+
+
+
+}
