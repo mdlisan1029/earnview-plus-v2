@@ -3,18 +3,20 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-
-const proofRoutes = require('./routes/proof')
   
 const adminRoutes = require('./routes/admin');
 
 const offerRoutes = require('./routes/offers');
 
-
+const proofRoutes = require('./routes/proof')
 
 app.use(express.json());
 
+app.use('/api/admin', adminRoutes);
 
+app.use('/api/offers', offerRoutes);
+
+app.use('/api/proofs', proofRoutes);
 
 app.use(
 
