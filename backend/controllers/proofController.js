@@ -207,7 +207,33 @@ user.balance += Number(offer.reward);
 
 }
 
+if(user.referredBy){
 
+const referrer=db.users.find(
+
+u=>u.id===user.referredBy
+
+);
+
+
+if(referrer){
+
+if(!referrer.balance){
+
+referrer.balance=0;
+
+}
+
+
+referrer.balance +=
+
+Number(offer.reward)*0.10;
+
+
+}
+
+
+  }
 
 writeDB(
 
