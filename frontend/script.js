@@ -1,148 +1,23 @@
-const API = 'https://YOUR_RENDER_URL.onrender.com';
+const API = "https://YOUR_RENDER_URL.onrender.com";
 
-const userId = 1;
+const tg = window.Telegram.WebApp;
+
+tg.ready();
+
+let userId = null;
 
 
 
-async function loadOffers(){
+async function telegramLogin(){
+
+const telegram_id = tg.initDataUnsafe.user.id;
+
+const username = tg.initDataUnsafe.user.username || "user";
+
 
 const res = await fetch(
 
-API+'/api/offers'
-
-);
-
-const offers = await res.json();
-
-let html='';
-
-
-offers.forEach(o=>{
-
-html+=`
-
-<div class="card">
-
-<img
-
-src="${API}/uploads/${o.image}"
-
-width="120"
-
->
-
-<h3>
-
-${o.title}
-
-</h3>
-
-
-<p>
-
-${o.reward} BDT
-
-</p>
-
-
-
-<p>
-
-${o.description}
-
-</p>
-
-
-
-<button
-
-onclick="submitProofPage(
-
-${o.id}
-
-)"
-
->
-
-Complete Offer
-
-</button>
-
-
-
-</div>
-
-`;
-
-});
-
-
-document.getElementById(
-
-'offers'
-
-).innerHTML=html;
-
-
-}
-
-
-
-
-
-function submitProofPage(id){
-
-window.location.href=
-
-'proof.html?offer='
-
-+
-
-id;
-
-}
-
-
-
-
-async function createWithdraw(){
-
-
-const amount=
-
-document.getElementById(
-
-'amount'
-
-).value;
-
-
-
-const method=
-
-document.getElementById(
-
-'method'
-
-).value;
-
-
-
-const number=
-
-document.getElementById(
-
-'number'
-
-).value;
-
-
-
-await fetch(
-
-API+
-
-'/api/withdraw/create',
+API + '/api/auth/telegram',
 
 {
 
@@ -156,28 +31,113 @@ headers:{
 
 body:JSON.stringify({
 
-userId,
+telegram_id,
 
-amount,
-
-method,
-
-number
+username
 
 })
 
 }
 
+);
+
+
+const data = await res.json();
+
+
+userId = data.user.id;
+
+
+localStorage.setItem(
+
+'userId',
+
+userId
 
 );
 
 
+}
 
-alert(
 
-'Withdraw Submitted'
+
+async function loadOffers(){
+
+
+const res = await fetch(
+
+API+'/api/offers'
 
 );
+
+
+const offers = await res.json();
+
+
+let html='';
+
+
+
+offers.forEach(o=>{
+
+
+html+=`
+
+<div class="card">
+
+
+<img
+
+src="${API}/uploads/${o.image}"
+
+width="100"
+
+>
+
+
+<h3>${o.title}</h3>
+
+
+<p>
+
+${o.reward} BDT
+
+</p>
+
+
+<p>
+
+${o.description}
+
+</p>
+
+
+
+<button>
+
+Complete Offer
+
+</button>
+
+
+</div>
+
+`;
+
+
+});
+
+
+
+if(document.getElementById('offers')){
+
+document.getElementById(
+
+'offers'
+
+).innerHTML=html;
+
+}
 
 
 }
@@ -188,44 +148,32 @@ alert(
 async function loadProfile(){
 
 
+if(
+
+document.getElementById('uid')
+
+){
+
 document.getElementById(
 
 'uid'
 
 ).innerText=userId;
 
+}
+
 
 }
 
 
 
 
-if(
+telegramLogin().then(()=>{
 
-document.getElementById(
-
-'offers'
-
-)
-
-){
 
 loadOffers();
 
-}
-
-
-
-if(
-
-document.getElementById(
-
-'uid'
-
-)
-
-){
-
 loadProfile();
 
-  }
+
+});
