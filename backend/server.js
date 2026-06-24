@@ -16,6 +16,12 @@ const analyticsRoutes=require('./routes/analytics');
 
 app.use(express.json());
 
+app.use(express.urlencoded({
+
+extended:true
+
+}));
+
 
 app.use('/api/admin', adminRoutes);
 
