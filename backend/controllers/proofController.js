@@ -46,6 +46,7 @@ null,
 
 
 
+
 exports.submitProof=(req,res)=>{
 
 
@@ -60,6 +61,48 @@ userId,
 offerId
 
 }=req.body;
+
+
+
+if(!req.file){
+
+return res.status(400).json({
+
+success:false,
+
+message:'Image required'
+
+});
+
+}
+
+
+
+const already=db.proofs.find(
+
+p=>
+
+p.userId==userId
+
+&&
+
+p.offerId==offerId
+
+);
+
+
+
+if(already){
+
+return res.status(400).json({
+
+success:false,
+
+message:'Already submitted'
+
+});
+
+}
 
 
 
@@ -83,9 +126,11 @@ status:'pending'
 
 
 
-if(!db.proofs)
+if(!db.proofs){
 
 db.proofs=[];
+
+}
 
 
 
@@ -107,12 +152,15 @@ db
 
 res.json({
 
-success:true
+success:true,
+
+message:'Proof submitted'
 
 });
 
 
 };
+
 
 
 
@@ -134,6 +182,8 @@ db.proofs||[]
 
 
 };
+
+
 
 
 
@@ -175,6 +225,24 @@ success:false
 
 
 
+if(
+
+proof.status==='approved'
+
+){
+
+return res.status(400).json({
+
+success:false,
+
+message:'Already approved'
+
+});
+
+}
+
+
+
 proof.status='approved';
 
 
@@ -195,19 +263,34 @@ u=>u.id==proof.userId
 
 
 
-if (offer && user) {
+if(
 
-if (!user.balance) {
+offer
 
-user.balance = 0;
+&&
+
+user
+
+){
+
+if(!user.balance){
+
+user.balance=0;
 
 }
 
-user.balance += Number(offer.reward);
 
-}
+
+user.balance+=Number(
+
+offer.reward
+
+);
+
+
 
 if(user.referredBy){
+
 
 const referrer=db.users.find(
 
@@ -216,7 +299,9 @@ u=>u.id===user.referredBy
 );
 
 
+
 if(referrer){
+
 
 if(!referrer.balance){
 
@@ -225,15 +310,30 @@ referrer.balance=0;
 }
 
 
-referrer.balance +=
 
-Number(offer.reward)*0.10;
+const bonus=Math.floor(
+
+Number(offer.reward)*0.10
+
+);
+
+
+
+referrer.balance+=bonus;
+
 
 
 }
 
 
-  }
+
+}
+
+
+
+}
+
+
 
 writeDB(
 
@@ -245,12 +345,16 @@ db
 
 res.json({
 
-success:true
+success:true,
+
+message:'Proof approved'
 
 });
 
 
 };
+
+
 
 
 
@@ -306,7 +410,9 @@ db
 
 res.json({
 
-success:true
+success:true,
+
+message:'Proof rejected'
 
 });
 
