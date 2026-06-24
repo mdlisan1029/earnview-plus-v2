@@ -259,3 +259,171 @@ loadOffers();
 
 
 loadOffers();
+
+async function loadProofs(){
+
+const res = await fetch(
+
+API +
+
+'/api/proofs'
+
+);
+
+
+const proofs = await res.json();
+
+
+let html='';
+
+
+
+proofs.forEach(p=>{
+
+
+html += `
+
+
+<div class="card">
+
+
+<p>
+
+User ID : ${p.userId}
+
+</p>
+
+
+<p>
+
+Offer ID : ${p.offerId}
+
+</p>
+
+
+<img
+
+src="${API}/uploads/${p.image}"
+
+width="120"
+
+>
+
+
+<p>
+
+Status :
+
+${p.status}
+
+</p>
+
+
+
+<button
+
+onclick="approveProof(
+
+${p.id}
+
+)"
+
+>
+
+Approve
+
+</button>
+
+
+
+<button
+
+onclick="rejectProof(
+
+${p.id}
+
+)"
+
+>
+
+Reject
+
+</button>
+
+
+</div>
+
+
+
+`;
+
+
+});
+
+
+
+document.getElementById(
+
+'proofs'
+
+).innerHTML=html;
+
+
+
+}
+
+
+
+
+async function approveProof(id){
+
+
+await fetch(
+
+API+
+
+'/api/proofs/approve/'+id,
+
+{
+
+method:'POST'
+
+}
+
+);
+
+
+loadProofs();
+
+
+}
+
+
+
+
+async function rejectProof(id){
+
+
+await fetch(
+
+API+
+
+'/api/proofs/reject/'+id,
+
+{
+
+method:'POST'
+
+}
+
+);
+
+
+loadProofs();
+
+
+}
+
+
+
+loadProofs();
