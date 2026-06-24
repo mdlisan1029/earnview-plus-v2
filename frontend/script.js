@@ -10,14 +10,25 @@ let userId = null;
 
 async function telegramLogin(){
 
-const telegram_id = tg.initDataUnsafe.user.id;
+try{
 
-const username = tg.initDataUnsafe.user.username || "user";
+const telegram_id = tg.initDataUnsafe?.user?.id;
+
+const username = tg.initDataUnsafe?.user?.username || "user";
+
+
+if(!telegram_id){
+
+console.log("Telegram user not found");
+
+return;
+
+}
 
 
 const res = await fetch(
 
-API + '/api/auth/telegram',
+API+'/api/auth/telegram',
 
 {
 
@@ -57,7 +68,14 @@ userId
 );
 
 
+}catch(e){
+
+console.log(e);
+
 }
+
+}
+
 
 
 
@@ -95,7 +113,11 @@ width="100"
 >
 
 
-<h3>${o.title}</h3>
+<h3>
+
+${o.title}
+
+</h3>
 
 
 <p>
@@ -113,11 +135,12 @@ ${o.description}
 
 
 
-<button>
+<button onclick="submitProofPage(${o.id})">
 
 Complete Offer
 
 </button>
+
 
 
 </div>
@@ -131,14 +154,31 @@ Complete Offer
 
 if(document.getElementById('offers')){
 
+
 document.getElementById(
 
 'offers'
 
 ).innerHTML=html;
 
+
 }
 
+
+
+}
+
+
+
+function submitProofPage(id){
+
+window.location.href=
+
+'proof.html?offer='
+
++
+
+id;
 
 }
 
@@ -150,7 +190,11 @@ async function loadProfile(){
 
 if(
 
-document.getElementById('uid')
+document.getElementById(
+
+'uid'
+
+)
 
 ){
 
@@ -160,40 +204,37 @@ document.getElementById(
 
 ).innerText=userId;
 
-}
-
 
 }
 
 
+}
 
 
-telegramLogin().then(()=>{
 
-
-loadOffers();
-
-loadProfile();
-
-loadReferral();
-
-
-});
 
 
 async function loadReferral(){
 
 
-const res=await fetch(
+try{
+
+
+const res = await fetch(
 
 API+
 
-'/api/referral/'+userId
+'/api/referral/'
+
++
+
+userId
 
 );
 
 
-const data=await res.json();
+
+const data = await res.json();
 
 
 
@@ -224,7 +265,18 @@ data.code;
 }
 
 
-  }
+
+}catch(e){
+
+console.log(e);
+
+}
+
+
+}
+
+
+
 
 
 async function submitProof(){
@@ -257,7 +309,7 @@ if(!file){
 
 alert(
 
-'Select screenshot'
+'Select Screenshot'
 
 );
 
@@ -280,6 +332,7 @@ userId
 );
 
 
+
 formData.append(
 
 'offerId',
@@ -287,6 +340,7 @@ formData.append(
 offerId
 
 );
+
 
 
 formData.append(
@@ -332,3 +386,27 @@ window.location.href='index.html';
 
 
 }
+
+
+
+
+
+async function init(){
+
+
+await telegramLogin();
+
+
+loadOffers();
+
+
+loadProfile();
+
+
+loadReferral();
+
+
+}
+
+
+init();
