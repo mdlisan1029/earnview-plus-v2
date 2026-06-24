@@ -9,7 +9,7 @@ const adminRoutes = require('./routes/admin');
 const offerRoutes = require('./routes/offers');
 const proofRoutes = require('./routes/proofs');
 const withdrawRoutes = require('./routes/withdraw');
-
+const authRoutes=require('./routes/auth');
 
 app.use(express.json());
 
