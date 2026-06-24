@@ -16,7 +16,7 @@ const telegram_id=tg.initDataUnsafe?.user?.id;
 
 const username=tg.initDataUnsafe?.user?.username||"user";
 
-
+const start_param = tg.initDataUnsafe?.start_param || null;
 if(!telegram_id){
 
 userId=localStorage.getItem("userId");
