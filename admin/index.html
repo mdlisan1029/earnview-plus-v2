@@ -1,172 +1,144 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
 
-<title>Admin Dashboard</title>
+<title>
 
-<link rel="stylesheet" href="style.css">
+Dashboard
+
+</title>
+
+<link rel="stylesheet"
+
+href="style.css">
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
-<h1>EarnView Admin</h1>
+
+<h1>
+
+Admin Dashboard
+
+</h1>
+
 
 
 <div class="cards">
 
+
 <div class="card">
 
-<h2 id="users">
+<h3>
+
+Users
+
+</h3>
+
+
+<p id="users">
 
 0
 
-</h2>
-
-<p>Total Users</p>
+</p>
 
 </div>
 
 
-<div class="card">
-
-<h2 id="offers">
-
-0
-
-</h2>
-
-<p>Total Offers</p>
-
-</div>
 
 
 <div class="card">
 
-<h2 id="withdrawals">
-
-0
-
-</h2>
-
-<p>Pending Withdrawals</p>
-
-</div>
-
-
-<div class="card">
-
-<h2 id="revenue">
-
-0
-
-</h2>
-
-<p>Revenue</p>
-
-</div>
-
-</div>
-
-
-
-<div class="buttons">
-
-<button onclick="location.href='offers.html'">
+<h3>
 
 Offers
 
-</button>
+</h3>
 
 
-<button onclick="location.href='withdrawals.html'">
+<p id="offers">
 
-Withdrawals
+0
 
-</button>
-
-
-<button onclick="logout()">
-
-Logout
-
-</button>
-
-</div>
-
+</p>
 
 </div>
 
 
 
-<script>
 
-const token = localStorage.getItem(
+<div class="card">
 
-'adminToken'
+<h3>
 
-);
+Pending Proofs
 
-
-if(!token){
-
-window.location.href='login.html';
-
-}
+</h3>
 
 
+<p id="proofs">
 
-function logout(){
+0
 
-localStorage.removeItem(
+</p>
 
-'adminToken'
-
-);
-
-window.location.href='login.html';
-
-}
+</div>
 
 
 
-document.getElementById(
 
-'users'
+<div class="card">
 
-).innerText='125';
+<h3>
 
+Pending Withdraws
 
-
-document.getElementById(
-
-'offers'
-
-).innerText='8';
+</h3>
 
 
+<p id="withdraws">
 
-document.getElementById(
+0
 
-'withdrawals'
+</p>
 
-).innerText='3';
+</div>
 
 
 
-document.getElementById(
 
-'revenue'
+<div class="card">
 
-).innerText='1520 BDT';
+<h3>
+
+Paid
+
+</h3>
+
+
+<p id="paid">
+
+0 BDT
+
+</p>
+
+</div>
 
 
 
-</script>
+</div>
+
+
+
+<script src="script.js"></script>
 
 </body>
 
-  </html>
+</html>
