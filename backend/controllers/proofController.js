@@ -195,21 +195,15 @@ u=>u.id==proof.userId
 
 
 
-if(
+if (offer && user) {
 
-offer
+if (!user.balance) {
 
-&&
+user.balance = 0;
 
-user
+}
 
-){
-
-user.balance+=Number(
-
-offer.reward
-
-);
+user.balance += Number(offer.reward);
 
 }
 
