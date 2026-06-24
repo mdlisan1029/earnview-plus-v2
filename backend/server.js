@@ -8,6 +8,7 @@ const app = express();
 const adminRoutes = require('./routes/admin');
 const offerRoutes = require('./routes/offers');
 const proofRoutes = require('./routes/proofs');
+const withdrawRoutes = require('./routes/withdraw');
 
 
 app.use(express.json());
@@ -18,6 +19,8 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/offers', offerRoutes);
 
 app.use('/api/proofs', proofRoutes);
+
+app.use('/api/withdraw', withdrawRoutes);
 
 
 app.use(
