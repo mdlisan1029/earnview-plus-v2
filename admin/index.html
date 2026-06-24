@@ -1,1 +1,172 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>EarnView Admin</h1>
+
+
+<div class="cards">
+
+<div class="card">
+
+<h2 id="users">
+
+0
+
+</h2>
+
+<p>Total Users</p>
+
+</div>
+
+
+<div class="card">
+
+<h2 id="offers">
+
+0
+
+</h2>
+
+<p>Total Offers</p>
+
+</div>
+
+
+<div class="card">
+
+<h2 id="withdrawals">
+
+0
+
+</h2>
+
+<p>Pending Withdrawals</p>
+
+</div>
+
+
+<div class="card">
+
+<h2 id="revenue">
+
+0
+
+</h2>
+
+<p>Revenue</p>
+
+</div>
+
+</div>
+
+
+
+<div class="buttons">
+
+<button onclick="location.href='offers.html'">
+
+Offers
+
+</button>
+
+
+<button onclick="location.href='withdrawals.html'">
+
+Withdrawals
+
+</button>
+
+
+<button onclick="logout()">
+
+Logout
+
+</button>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+const token = localStorage.getItem(
+
+'adminToken'
+
+);
+
+
+if(!token){
+
+window.location.href='login.html';
+
+}
+
+
+
+function logout(){
+
+localStorage.removeItem(
+
+'adminToken'
+
+);
+
+window.location.href='login.html';
+
+}
+
+
+
+document.getElementById(
+
+'users'
+
+).innerText='125';
+
+
+
+document.getElementById(
+
+'offers'
+
+).innerText='8';
+
+
+
+document.getElementById(
+
+'withdrawals'
+
+).innerText='3';
+
+
+
+document.getElementById(
+
+'revenue'
+
+).innerText='1520 BDT';
+
+
+
+</script>
+
+</body>
+
+  </html>
