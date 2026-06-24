@@ -1,16 +1,10 @@
 const fs = require('fs');
-
 const path = require('path');
 
-
 const dbPath = path.join(
-
 __dirname,
-
 '../database.json'
-
 );
-
 
 
 function readDB(){
@@ -63,18 +57,12 @@ const db=readDB();
 const {
 
 title,
-
 description,
-
 reward,
-
 link,
-
 category
 
-}
-
-=req.body;
+}=req.body;
 
 
 
@@ -102,7 +90,7 @@ title,
 description,
 
 
-reward,
+reward:Number(reward),
 
 
 link,
@@ -152,7 +140,6 @@ offer
 });
 
 
-
 };
 
 
@@ -173,6 +160,90 @@ db.offers
 
 );
 
+
+
+};
+
+
+
+
+
+
+exports.updateOffer=(req,res)=>{
+
+
+const db=readDB();
+
+
+
+const id=parseInt(
+
+req.params.id
+
+);
+
+
+
+const offer=db.offers.find(
+
+o=>o.id===id
+
+);
+
+
+
+if(!offer){
+
+return res.status(404).json({
+
+success:false,
+
+message:'Offer not found'
+
+});
+
+}
+
+
+
+const {
+
+title,
+description,
+reward,
+link,
+category
+
+}=req.body;
+
+
+
+offer.title=title;
+offer.description=description;
+offer.reward=Number(reward);
+offer.link=link;
+offer.category=category;
+
+
+
+writeDB(
+
+db
+
+);
+
+
+
+res.json({
+
+
+success:true,
+
+
+message:'Offer Updated'
+
+
+});
 
 
 };
@@ -290,7 +361,6 @@ message:'Offer Deleted'
 
 
 });
-
 
 
 };
