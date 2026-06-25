@@ -680,7 +680,7 @@ data.totalUsers;
 
 document.getElementById(
 
-'offers'
+'statsoffers'
 
 ).innerText=
 
@@ -690,7 +690,7 @@ data.totalOffers;
 
 document.getElementById(
 
-'proofs'
+'statsproofs'
 
 ).innerText=
 
@@ -700,7 +700,7 @@ data.pendingProofs;
 
 document.getElementById(
 
-'withdraws'
+'statswithdraws'
 
 ).innerText=
 
