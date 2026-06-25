@@ -1,153 +1,116 @@
-const API =
-'https://earnview-plus-v2.onrender.com';
+const API = 'https://earnview-plus-v2.onrender.com';
 
-const tg = window.Telegram.WebApp;
+const tg = window.Telegram?.WebApp;
 
-tg.ready();
+if (tg) {
+    tg.ready();
+}
 
 let userId = null;
 
 
+/* ================= TELEGRAM LOGIN ================= */
 
-async function telegramLogin(){
+async function telegramLogin() {
 
-try{
+    try {
 
-const telegram_id = tg.initDataUnsafe?.user?.id;
+        const telegram_id =
+            tg?.initDataUnsafe?.user?.id;
 
-const username = tg.initDataUnsafe?.user?.username || "user";
+        const username =
+            tg?.initDataUnsafe?.user?.username || 'user';
 
-const start_param = tg.initDataUnsafe?.start_param || null;
-
-
-
-if(!telegram_id){
-
-userId = localStorage.getItem('userId');
-
-return;
-
-}
+        const start_param =
+            tg?.initDataUnsafe?.start_param || null;
 
 
+        if (!telegram_id) {
 
-const res = await fetch(
+            userId = localStorage.getItem('userId');
 
-API+'/api/auth/telegram',
-
-{
-
-method:'POST',
-
-headers:{
-
-'Content-Type':'application/json'
-
-},
-
-body:JSON.stringify({
-
-telegram_id,
-
-username,
-
-start_param
-
-})
-
-}
-
-);
+            return;
+        }
 
 
+        const res = await fetch(
+            API + '/api/auth/telegram',
+            {
 
-const data = await res.json();
+                method: 'POST',
+
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+
+                    telegram_id,
+                    username,
+                    start_param
+
+                })
+
+            }
+        );
 
 
+        const data = await res.json();
 
-userId = data.user.id;
+        userId = data.user.id;
 
+        localStorage.setItem(
+            'userId',
+            userId
+        );
 
+    }
 
-localStorage.setItem(
+    catch (e) {
 
-'userId',
+        console.log(e);
 
-userId
-
-);
-
-
-
-}
-
-catch(e){
-
-console.log(e);
-
-}
+    }
 
 }
 
 
+/* ================= OFFERS ================= */
+
+async function loadOffers() {
+
+    try {
+
+        const res = await fetch(
+
+            API + '/api/offers'
+
+        );
 
 
-
-async function loadOffers(){
-
-try{
+        const offers = await res.json();
 
 
-const res = await fetch(
-
-API+'/api/offers'
-
-);
+        let html = '';
 
 
-
-const offers = await res.json();
-
+        offers.forEach(o => {
 
 
-let html='';
-
-
-
-offers.forEach(o=>{
-
-
-html+=`
+            html += `
 
 <div class="card">
 
-
 <img
-
 src="${API}/uploads/${o.image}"
-
 width="100"
-
 >
-
 
 <h3>${o.title}</h3>
 
+<p>${o.reward} BDT</p>
 
-<p>
-
-${o.reward} BDT
-
-</p>
-
-
-<p>
-
-${o.description}
-
-</p>
-
-
+<p>${o.description}</p>
 
 <button onclick="submitProofPage(${o.id})">
 
@@ -155,387 +118,347 @@ Complete Offer
 
 </button>
 
-
-
 </div>
 
 `;
 
-
-});
-
+        });
 
 
-if(document.getElementById('offers')){
+
+        const box = document.getElementById(
+
+            'offers'
+
+        );
 
 
-document.getElementById(
+        if (box) {
 
-'offers'
+            box.innerHTML = html;
 
-).innerHTML=html;
+        }
 
+    }
+
+    catch (e) {
+
+        console.log(e);
+
+    }
+
+}
+
+
+function submitProofPage(id) {
+
+    window.location.href =
+
+        'proof.html?offer=' + id;
+
+}
+
+
+/* ================= PROFILE ================= */
+
+async function loadProfile() {
+
+
+    try {
+
+
+        const res = await fetch(
+
+            API +
+
+            '/api/user/' +
+
+            userId
+
+        );
+
+
+        const data = await res.json();
+
+
+
+        if (document.getElementById('uid'))
+
+            document.getElementById('uid').innerText =
+
+                data.id;
+
+
+
+        if (document.getElementById('bal'))
+
+            document.getElementById('bal').innerText =
+
+                data.balance;
+
+
+
+        if (document.getElementById('refs'))
+
+            document.getElementById('refs').innerText =
+
+                data.referrals;
+
+
+
+        if (document.getElementById('refCode'))
+
+            document.getElementById('refCode').innerText =
+
+                'https://t.me/YOUR_BOT?start=' +
+
+                data.referralCode;
+
+
+    }
+
+
+    catch (e) {
+
+        console.log(e);
+
+    }
 
 }
 
 
 
-}
+/* ================= PROOF ================= */
 
-catch(e){
+async function submitProof() {
 
-console.log(e);
 
-}
+    const params = new URLSearchParams(
 
-}
+        window.location.search
 
+    );
 
 
+    const offerId = params.get(
 
+        'offer'
 
-function submitProofPage(id){
+    );
 
-window.location.href=
 
-'proof.html?offer='
+    const file = document.getElementById(
 
-+
+        'proof'
 
-id;
+    ).files[0];
 
-}
 
 
+    if (!file) {
 
+        alert(
 
+            'Select Screenshot'
 
-async function loadProfile(){
+        );
 
-try{
+        return;
 
+    }
 
-const res = await fetch(
 
-API+
 
-'/api/user/'
+    const formData = new FormData();
 
-+
 
-userId
+    formData.append(
 
-);
+        'userId',
 
+        userId
 
+    );
 
-const data = await res.json();
 
+    formData.append(
 
+        'offerId',
 
-if(document.getElementById('uid')){
+        offerId
 
+    );
 
-document.getElementById(
 
-'uid'
+    formData.append(
 
-).innerText=data.id;
+        'image',
 
+        file
 
-}
+    );
 
 
 
-if(document.getElementById('bal')){
+    await fetch(
 
+        API +
 
-document.getElementById(
+        '/api/proofs/submit',
 
-'bal'
+        {
 
-).innerText=data.balance;
+            method: 'POST',
 
+            body: formData
 
-}
+        }
 
+    );
 
 
-if(document.getElementById('refs')){
+    alert(
 
+        'Proof Submitted'
 
-document.getElementById(
+    );
 
-'refs'
 
-).innerText=data.referrals;
+    window.location.href =
 
-
-}
-
-
-
-if(document.getElementById('refCode')){
-
-
-document.getElementById(
-
-'refCode'
-
-).innerText=
-
-
-'https://t.me/YOUR_BOT?start='
-
-+
-
-data.referralCode;
-
+        '/app/index.html';
 
 }
 
 
 
-}
+/* ================= WITHDRAW ================= */
 
-catch(e){
-
-console.log(e);
-
-}
-
-}
+async function createWithdraw() {
 
 
+    const amount =
+
+        document.getElementById(
+
+            'amount'
+
+        ).value;
 
 
+    const method =
 
-async function submitProof(){
+        document.getElementById(
 
+            'method'
 
-const params = new URLSearchParams(
-
-window.location.search
-
-);
+        ).value;
 
 
+    const number =
 
-const offerId = params.get(
+        document.getElementById(
 
-'offer'
+            'number'
 
-);
-
-
-
-const file = document.getElementById(
-
-'proof'
-
-).files[0];
+        ).value;
 
 
 
-if(!file){
+    if (amount < 100) {
 
-alert(
+        alert(
 
-'Select Screenshot'
+            'Minimum withdraw 100 BDT'
 
-);
+        );
 
-return;
+        return;
 
-}
-
-
-
-const formData = new FormData();
+    }
 
 
 
-formData.append(
+    await fetch(
 
-'userId',
+        API +
 
-userId
+        '/api/withdraw/create',
 
-);
+        {
+
+            method: 'POST',
+
+            headers: {
+
+                'Content-Type': 'application/json'
+
+            },
+
+            body: JSON.stringify({
+
+                userId,
+
+                amount,
+
+                method,
+
+                number
+
+            })
+
+        }
+
+    );
 
 
+    alert(
 
-formData.append(
+        'Withdraw Submitted'
 
-'offerId',
-
-offerId
-
-);
-
-
-
-formData.append(
-
-'image',
-
-file
-
-);
-
-
-
-
-await fetch(
-
-API+
-
-'/api/proofs/submit',
-
-{
-
-method:'POST',
-
-body:formData
+    );
 
 }
 
-);
+
+/* ================= INIT ================= */
+
+async function init() {
 
 
+    await telegramLogin();
 
 
-alert(
+    if (
 
-'Proof Submitted'
+        document.getElementById(
 
-);
+            'offers'
 
+        )
 
+    ) {
 
-window.location.href='index.html';
+        await loadOffers();
 
-
-
-}
-
-
+    }
 
 
+    if (
 
-async function createWithdraw(){
+        document.getElementById(
 
+            'uid'
 
-const amount = document.getElementById(
+        )
 
-'amount'
+    ) {
 
-).value;
+        await loadProfile();
 
-
-
-const method = document.getElementById(
-
-'method'
-
-).value;
-
-
-
-const number = document.getElementById(
-
-'number'
-
-).value;
-
-
-
-if(amount<100){
-
-alert(
-
-'Minimum withdraw 100 BDT'
-
-);
-
-return;
+    }
 
 }
-
-
-
-await fetch(
-
-API+
-
-'/api/withdraw/create',
-
-{
-
-method:'POST',
-
-headers:{
-
-'Content-Type':'application/json'
-
-},
-
-body:JSON.stringify({
-
-userId,
-
-amount,
-
-method,
-
-number
-
-})
-
-}
-
-);
-
-
-
-alert(
-
-'Withdraw Submitted'
-
-);
-
-
-}
-
-
-
-
-
-async function init(){
-
-
-await telegramLogin();
-
-
-
-if(document.getElementById('offers')){
-
-await loadOffers();
-
-}
-
-
-
-if(document.getElementById('uid')){
-
-await loadProfile();
-
-}
-
-
-
-}
-
 
 
 init();
