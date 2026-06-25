@@ -21,7 +21,7 @@ app.use(express.urlencoded({
 extended:true
 
 }));
-
+app.use(cors());
 
 app.use('/api/admin', adminRoutes);
 
