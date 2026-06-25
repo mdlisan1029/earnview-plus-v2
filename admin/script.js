@@ -89,7 +89,7 @@ loadOffers();
 async function loadOffers(){
 
 
-if(!document.getElementById('offers'))
+if(!document.getElementById('offersList'))
 
 return;
 
@@ -168,7 +168,7 @@ Delete
 
 document.getElementById(
 
-'offers'
+'offersList'
 
 ).innerHTML=html;
 
@@ -297,7 +297,7 @@ loadOffers();
 async function loadProofs(){
 
 
-if(!document.getElementById('proofs'))
+if(!document.getElementById('proofsList'))
 
 return;
 
@@ -395,7 +395,7 @@ Reject
 
 document.getElementById(
 
-'proofs'
+'proofsList'
 
 ).innerHTML=html;
 
@@ -467,7 +467,7 @@ loadProofs();
 async function loadWithdraws(){
 
 
-if(!document.getElementById('withdraws'))
+if(!document.getElementById('withdrawsList'))
 
 return;
 
@@ -576,7 +576,7 @@ Reject
 
 document.getElementById(
 
-'withdraws'
+'withdrawsList'
 
 ).innerHTML=html;
 
