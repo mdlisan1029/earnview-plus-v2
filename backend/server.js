@@ -64,7 +64,7 @@ app.use(
 
 app.get('/', (req,res)=>{
 
-  res.send('EarnView Plus Backend Running');
+  res.send('EarnView Plus Backend Running v2');
 
 });
 
