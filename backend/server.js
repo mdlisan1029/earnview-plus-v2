@@ -1,58 +1,70 @@
 const express = require('express');
-
 const path = require('path');
-
 const cors = require('cors');
 
 const app = express();
-
 
 const adminRoutes = require('./routes/admin');
 const offerRoutes = require('./routes/offers');
 const proofRoutes = require('./routes/proofs');
 const withdrawRoutes = require('./routes/withdraw');
-const authRoutes=require('./routes/auth');
-const referralRoutes=require('./routes/referral');
-const userRoutes=require('./routes/user');
-const analyticsRoutes=require('./routes/analytics');
+const authRoutes = require('./routes/auth');
+const referralRoutes = require('./routes/referral');
+const userRoutes = require('./routes/user');
+const analyticsRoutes = require('./routes/analytics');
+
 
 app.use(express.json());
 
 app.use(express.urlencoded({
-
-extended:true
-
+  extended: true
 }));
+
 app.use(cors());
 
+
+
 app.use('/api/admin', adminRoutes);
-
 app.use('/api/offers', offerRoutes);
-
 app.use('/api/proofs', proofRoutes);
-
 app.use('/api/withdraw', withdrawRoutes);
-
 app.use('/api/auth', authRoutes);
-
 app.use('/api/referral', referralRoutes);
-
 app.use('/api/user', userRoutes);
-
 app.use('/api/analytics', analyticsRoutes);
 
 
+
 app.use(
-'/uploads',
-express.static(
-path.join(__dirname, 'uploads')
-)
+  '/uploads',
+  express.static(
+    path.join(__dirname,'uploads')
+  )
 );
 
 
-app.get('/', (req, res) => {
 
-res.send('EarnView Plus Backend Running');
+app.use(
+  '/admin',
+  express.static(
+    path.join(__dirname,'admin')
+  )
+);
+
+
+
+app.use(
+  '/app',
+  express.static(
+    path.join(__dirname,'frontend')
+  )
+);
+
+
+
+app.get('/', (req,res)=>{
+
+  res.send('EarnView Plus Backend Running');
 
 });
 
@@ -60,8 +72,8 @@ res.send('EarnView Plus Backend Running');
 const PORT = process.env.PORT || 5000;
 
 
-app.listen(PORT, () => {
+app.listen(PORT,()=>{
 
-console.log(`Server running on ${PORT}`);
+  console.log(`Server running on ${PORT}`);
 
 });
