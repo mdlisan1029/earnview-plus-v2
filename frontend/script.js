@@ -1,4 +1,5 @@
-const API = "https://YOUR_RENDER_URL.onrender.com";
+const API =
+'https://earnview-plus-v2.onrender.com';
 
 const tg = window.Telegram.WebApp;
 
