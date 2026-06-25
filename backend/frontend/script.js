@@ -25,18 +25,13 @@ async function telegramLogin() {
             tg?.initDataUnsafe?.start_param || null;
 
 
-    if(!telegram_id){
+if(!telegram_id){
 
-userId = 1;
-
-localStorage.setItem(
-'userId',
-1
-);
+userId = localStorage.getItem('userId');
 
 return;
 
-    }
+}
 
 
         const res = await fetch(
