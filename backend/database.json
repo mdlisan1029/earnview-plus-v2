@@ -1,6 +1,18 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": 1,
+      "telegram_id": 123456789,
+      "username": "testuser",
+      "balance": 0,
+      "referrals": 0,
+      "referralCode": "ABC123"
+    }
+  ],
+
   "offers": [],
+
   "proofs": [],
+
   "withdrawals": []
 }
